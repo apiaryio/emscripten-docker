@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
     && rm emsdk-portable.tar.gz \
     && cd emsdk_portable \
     && ./emsdk update \
-    && ./emsdk install --build=MinSizeRel -j2 sdk-tag-$EMCC_SDK_VERSION-${EMCC_SDK_ARCH}bit \
+    && ./emsdk install --build=MinSizeRel sdk-tag-$EMCC_SDK_VERSION-${EMCC_SDK_ARCH}bit \
 \
     && mkdir -p /clang \
     && cp -r /emsdk_portable/clang/tag-e$EMCC_SDK_VERSION/build_tag-e${EMCC_SDK_VERSION}_${EMCC_SDK_ARCH}/bin /clang \
