@@ -1,0 +1,12 @@
+# Runit config has sensitive data
+runitconfig.py
+
+# Python Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Terraform
+*.tfvars
+*.tfstate
+*.tfstate.backup
