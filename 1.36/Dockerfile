@@ -6,8 +6,9 @@ ENV EMCC_SDK_ARCH 32
 
 WORKDIR /
 
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates build-essential curl git-core cmake default-jdk python \
-    && curl -sL https://deb.nodesource.com/setup_5.x | bash - \
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates build-essential curl git-core cmake openjdk-7-jre-headless python \
+    && apt-mark hold openjdk-7-jre-headless \
+    && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get install -y nodejs \
     && curl https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz > emsdk-portable.tar.gz \
     && tar xzf emsdk-portable.tar.gz \
@@ -29,7 +30,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
     && rm -rf /emscripten/site \
     && for prog in em++ em-config emar emcc emconfigure emmake emranlib emrun emscons; do \
            ln -sf /emscripten/$prog /usr/local/bin; done \
-    && apt-get -y --purge remove curl git-core build-essential gcc ca-certificates \
+    && apt-get -y --purge remove curl git-core build-essential gcc \
     && apt-get -y clean \
     && apt-get -y autoclean \
     && apt-get -y autoremove \

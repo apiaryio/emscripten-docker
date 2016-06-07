@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+
 import os
 import sys
 import argparse
@@ -10,14 +11,14 @@ import string
 try:
     import pexpect
     from pexpect import pxssh
-except ImportError :
+except ImportError:
     sys.stderr.write("You do not have 'pexpect' installed.\n")
     sys.stderr.write('pip install pexpect or use your package manager.\n')
     sys.exit(1)
 
 try:
     from runitconfig import *
-except ImportError :
+except ImportError:
     sys.stderr.write('No runitconfig.py file found.\n')
     with open('runitconfig.py', 'w') as f:
         for i in ['aws_access = "<AWS ACCESS CODE>"',
@@ -38,6 +39,7 @@ except ImportError :
 VERBOSE = False
 ansi = re.compile(r'\x1b[^m]*m')
 
+
 class color:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -48,18 +50,23 @@ class color:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
 def print_step(pre, msg):
     print(color.OKGREEN + pre + color.HEADER + msg + color.ENDC)
+
 
 def print_local_step(msg):
     print_step('[PEXPECT]: ', msg)
 
+
 def print_remote_step(msg):
     print_step('[PEXPECT-SSH]: ', msg)
+
 
 def bail_out(msg, data):
     print(color.FAIL + '[PEXPECT]: ' + color.ENDC + '\n' + msg)
     sys.exit(2)
+
 
 def log(msg):
     if VERBOSE:
@@ -70,23 +77,27 @@ def ssh_session(ip, versions, latest=None):
     s = pxssh.pxssh(encoding='utf-8')
     s.login(ip, 'ec2-user', ssh_key=ssh_key)
 
-    print_remote_step('Docker login')
-    s.sendline("docker login -u '%s' -p '%s'"%(user, passwd))
-    s.expect_exact('Email:')
-    s.sendline(email)
-    s.prompt(timeout=30)
-    log(s.before)
+    try:
+        print_remote_step('Docker login')
+        s.sendline("docker login -u '%s' -p '%s'" % (user, passwd))
+        s.expect_exact('Email:', timeout=60)
+        s.sendline(email)
+        s.prompt(timeout=120)
+        log(s.before)
 
-    print_remote_step('emccbuild.py build')
+        print_remote_step('emccbuild.py build')
 
-    l = "./emccbuild.py -l build -v %s -p"%(' '.join(versions))
-    if latest is not None:
-        l += " -t %s"%(latest)
+        l = "python emccbuild.py -l build -v %s -p" % (' '.join(versions))
+        if latest is not None:
+            l += " -t %s" % (latest)
 
-    s.sendline(l)
-    s.prompt(timeout=1200)
-    log(s.before)
-    s.logout()
+        s.sendline(l)
+        s.prompt(timeout=1200)
+        log(s.before)
+        s.logout()
+    except pexpect.TIMEOUT:
+        print_remote_step('Expect Timeout reached, going interactive')
+        s.interact()
 
 
 def run(step, cmd, expect, bail, timeout=10):
@@ -126,12 +137,12 @@ def main():
 
     if not os.path.isfile('terraform.tfvars'):
         with open('terraform.tfvars', 'w') as tf:
-            tf.write('aws_access = "%s"\n'%(aws_access))
-            tf.write('aws_secret = "%s"\n'%(aws_secret))
-            tf.write('aws_instance_type = "%s"\n'%(aws_instance_type))
-            tf.write('aws_subnet_id = "%s"\n'%(aws_subnet_id))
-            tf.write('key_path = "%s"\n'%(ssh_key))
-            tf.write('key_name = "%s"\n\n'%(key_name))
+            tf.write('aws_access = "%s"\n' % (aws_access))
+            tf.write('aws_secret = "%s"\n' % (aws_secret))
+            tf.write('aws_instance_type = "%s"\n' % (aws_instance_type))
+            tf.write('aws_subnet_id = "%s"\n' % (aws_subnet_id))
+            tf.write('key_path = "%s"\n' % (ssh_key))
+            tf.write('key_name = "%s"\n\n' % (key_name))
 
     run("Terraform plan",
         'terraform plan',
@@ -156,10 +167,10 @@ def main():
         bail_out('Could not get the ec2 instance public IP.',
                  'Run terraform destroy to stop everything.')
 
-    log("EC2 Instance Public IP: %s"%(ec2ip))
+    log("EC2 Instance Public IP: %s" % (ec2ip))
 
     # SSH part comes in
-    print_local_step("Starting ssh session to ec2-user@%s"%(ec2ip))
+    print_local_step("Starting ssh session to ec2-user@%s" % (ec2ip))
     ssh_session(ec2ip, args.versions, args.latest)
 
     # Teardown everything
