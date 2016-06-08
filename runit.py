@@ -79,23 +79,22 @@ def ssh_session(ip, versions, latest=None):
 
     try:
         print_remote_step('Docker login')
-        s.sendline("docker login -u '%s' -p '%s'" % (user, passwd))
-        s.expect_exact('Email:', timeout=60)
+        s.sendline("docker login -u '%s' -p '%s'"%(user, passwd))
+        s.expect_exact('Email:', timeout=120)
         s.sendline(email)
-        s.prompt(timeout=120)
+        s.expect_exact('Login Succeeded', timeout=120)
         log(s.before)
-
-        print_remote_step('emccbuild.py build')
 
         l = "python emccbuild.py -l build -v %s -p" % (' '.join(versions))
         if latest is not None:
-            l += " -t %s" % (latest)
+            l += " -t %s"%(latest)
 
+        print_remote_step(l)
         s.sendline(l)
         s.prompt(timeout=1200)
         log(s.before)
         s.logout()
-    except pexpect.TIMEOUT:
+    except pexpect.TIMEOUT :
         print_remote_step('Expect Timeout reached, going interactive')
         s.interact()
 

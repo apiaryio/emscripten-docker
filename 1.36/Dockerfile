@@ -1,13 +1,17 @@
 FROM debian:latest
 MAINTAINER Vilibald Wanča (wvi@apiary.io)
 
-ENV EMCC_SDK_VERSION 1.36.5
+ENV EMCC_SDK_VERSION 1.36.7
 ENV EMCC_SDK_ARCH 32
 
 WORKDIR /
 
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates build-essential curl git-core cmake openjdk-7-jre-headless python \
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates build-essential curl git-core openjdk-7-jre-headless python \
     && apt-mark hold openjdk-7-jre-headless \
+    && curl -Os https://cmake.org/files/v3.6/cmake-3.6.1.tar.gz \
+    && tar xf cmake-3.6.1.tar.gz \
+    && cd cmake-3.6.1 && ./configure && make && make install && cd ..\
+    && rm -rf cmake* \
     && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get install -y nodejs \
     && curl https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz > emsdk-portable.tar.gz \
