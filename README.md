@@ -4,6 +4,8 @@ This image serves as convenient way how to have emscripten at hand
 without the need to build it for yourself, which takes a long time as
 you need to build clang from source.
 
+See the [docker hub](https://hub.docker.com/r/apiaryio/emcc/) for more details.
+
 ## Versioning
 
 The docker image version is the same as emscrpten version so
