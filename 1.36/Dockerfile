@@ -8,6 +8,7 @@ WORKDIR /
 
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates build-essential curl git-core openjdk-7-jre-headless python \
     && apt-mark hold openjdk-7-jre-headless \
+    && apt-mark hold make \
     && curl -Os https://cmake.org/files/v3.6/cmake-3.6.1.tar.gz \
     && tar xf cmake-3.6.1.tar.gz \
     && cd cmake-3.6.1 && ./configure && make && make install && cd ..\
