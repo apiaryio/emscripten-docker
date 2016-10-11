@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
     && rm -rf /emsdk_portable \
     && rm -rf /emscripten/tests \
     && rm -rf /emscripten/site \
-    && for prog in em++ em-config emar emcc emconfigure emmake emranlib emrun emscons; do \
+    && for prog in em++ em-config emar emcc emconfigure emmake emranlib emrun emscons emcmake; do \
            ln -sf /emscripten/$prog /usr/local/bin; done \
     && apt-get -y --purge remove curl git-core build-essential gcc \
     && apt-get -y clean \
