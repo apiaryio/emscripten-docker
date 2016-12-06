@@ -1,7 +1,7 @@
 FROM debian:latest
 MAINTAINER Vilibald Wanča (wvi@apiary.io)
 
-ENV EMCC_SDK_VERSION 1.36.11
+ENV EMCC_SDK_VERSION 1.36.14
 ENV EMCC_SDK_ARCH 32
 
 WORKDIR /
