@@ -7,13 +7,9 @@ ENV EMCC_BINARYEN_VERSION 1.37.14
 
 WORKDIR /
 
-RUN apt-get update && apt-get install -y --no-install-recommends gnupg ca-certificates build-essential curl git-core openjdk-8-jre-headless python \
+RUN apt-get update && apt-get install -y --no-install-recommends gnupg ca-certificates build-essential cmake curl git-core openjdk-8-jre-headless python \
     && apt-mark hold openjdk-8-jre-headless \
     && apt-mark hold make \
-    && curl -Os https://cmake.org/files/v3.6/cmake-3.6.1.tar.gz \
-    && tar xf cmake-3.6.1.tar.gz \
-    && cd cmake-3.6.1 && ./configure && make && make install && cd ..\
-    && rm -rf cmake* \
     && curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && apt-get install -y nodejs \
     && curl https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz > emsdk-portable.tar.gz \
