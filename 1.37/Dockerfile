@@ -49,6 +49,7 @@ RUN emcc --version \
     && em++ -s WASM=1 test.cpp -o test.js && nodejs test.js \
     && cd / \
     && rm -rf /tmp/emscripten_test \
+    && echo "All done."
 
 VOLUME ["/src"]
 WORKDIR /src
