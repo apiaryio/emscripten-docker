@@ -25,8 +25,8 @@ $> docker run --rm -v $(pwd):/src -t apiaryio/emcc emconfigure ./configure
 ```
 
 or if working on non-trivial project have a build script run that, see
-the `emcc` direcotry in drafter
-[repo](https://github.com/apiaryio/drafter).
+the `scripts` directory in drafter.js
+[repo](https://github.com/apiaryio/drafter.js).
 
 ```sh
 $> docker run --rm -v $(pwd):/src -t apiaryio/emcc emcc/emcbuild.sh
