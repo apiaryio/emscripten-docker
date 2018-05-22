@@ -1,9 +1,9 @@
 FROM debian:latest
-MAINTAINER Vilibald Wanča (wvi@apiary.io)
+MAINTAINER Vilibald Wanča (vilibald.wanca@oracle.com)
 
-ENV EMCC_SDK_VERSION 1.37.15
+ENV EMCC_SDK_VERSION 1.37.40
 ENV EMCC_SDK_ARCH 32
-ENV EMCC_BINARYEN_VERSION 1.37.14
+ENV EMCC_BINARYEN_VERSION 1.37.40
 
 WORKDIR /
 
@@ -53,4 +53,3 @@ RUN emcc --version \
 
 VOLUME ["/src"]
 WORKDIR /src
-
