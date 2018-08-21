@@ -8,12 +8,13 @@ See the [docker hub](https://hub.docker.com/r/apiaryio/emcc/) for more details.
 
 ## Versioning
 
-The docker image version is the same as emscrpten version so
-`apiaryio/emcc:1.33` corresponds to emscripten version `1.33`.
+The docker image version (tag) is the same as emscripten version so
+`apiaryio/emcc:1.38.11` corresponds to emscripten version `1.38.11`. Older
+images used to ignore the patch version but it we hit an issue along the way and
+started tagging even patch versions.
 
-In the respective subdirectories you can find Dockerfiles for all
-currently maintaned emscripten versions. Each of them is building the
-latest patch version.
+In the respective subdirectories you can find Dockerfiles for all emscripten
+versions ever built. Each of them is building the latest patch version.
 
 ## Usage
 
@@ -78,4 +79,3 @@ user = "<DOCKER USERNAME>"
 passwd = "<DOCKER PASSWORD>"
 email = "<DOCKER EMAIL>"
 ```
-
